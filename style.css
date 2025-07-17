@@ -1,0 +1,276 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+/* タブスタイル */
+.tabs {
+    display: flex;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ddd;
+}
+
+.tab-button {
+    padding: 10px 20px;
+    cursor: pointer;
+    border: none;
+    background-color: #eee;
+    border-radius: 5px 5px 0 0;
+    margin-right: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.tab-button.active {
+    background-color: #007bff;
+    color: white;
+    border-bottom: 2px solid #007bff;
+}
+
+.tab-content {
+    display: none;
+    padding: 20px 0;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+h1, h2, h3, h4 {
+    color: #007bff;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+}
+
+/* 時間割スタイル */
+#timetable-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#timetable-table th, #timetable-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+    vertical-align: top;
+}
+
+#timetable-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.lesson-cell {
+    width: 15%; /* 曜日数に合わせて調整 */
+    height: 80px; /* 各授業ブロックの高さ */
+    cursor: pointer;
+    background-color: #e9f5ff;
+    transition: background-color 0.2s ease;
+    position: relative; /* 課題表示用 */
+}
+
+.lesson-cell:hover {
+    background-color: #d0eaff;
+}
+
+.lesson-cell strong {
+    display: block;
+    font-size: 1.1em;
+    margin-bottom: 5px;
+}
+
+.lesson-cell span {
+    font-size: 0.9em;
+    color: #555;
+}
+
+.lesson-cell.has-assignment {
+    background-color: #ffe0e0; /* 課題がある場合は赤系の背景色 */
+    border: 2px solid #ff4d4d;
+}
+
+/* モーダルスタイル */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+    max-width: 600px;
+    border-radius: 8px;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-content label {
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.modal-content input[type="text"],
+.modal-content input[type="url"],
+.modal-content select {
+    width: calc(100% - 22px); /* Padding and border */
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.modal-content button[type="submit"],
+.modal-content button[type="button"] {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+.modal-content button[type="submit"]:hover,
+.modal-content button[type="button"]:hover {
+    background-color: #0056b3;
+}
+
+.criteria-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.criteria-item input {
+    flex: 1;
+    margin-right: 5px;
+}
+
+.criteria-item .remove-criteria {
+    background-color: #dc3545;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    margin-top: 0; /* Override default button margin */
+}
+
+.criteria-item .remove-criteria:hover {
+    background-color: #c82333;
+}
+
+/* 混雑具合スタイル */
+.crowd-section {
+    margin-bottom: 30px;
+    padding: 15px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.eatery, .library, .smoking-area {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+}
+
+.status-display {
+    font-weight: bold;
+    color: #28a745; /* デフォルトは緑 */
+    font-size: 1.1em;
+    margin-top: 5px;
+}
+
+/* 混雑レベルによる色分け */
+.status-display.crowded {
+    color: #dc3545; /* 混雑は赤 */
+}
+.status-display.normal {
+    color: #ffc107; /* 普通は黄 */
+}
+.status-display.empty {
+    color: #28a745; /* 空は緑 */
+}
+
+.crowd-section button {
+    background-color: #28a745;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.crowd-section button:hover {
+    background-color: #218838;
+}
+
+/* お店情報スタイル */
+#shops ul {
+    list-style-type: disc;
+    margin-left: 20px;
+}
+
+#shops li {
+    margin-bottom: 5px;
+}
+
+#shops a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+#shops a:hover {
+    text-decoration: underline;
+}
