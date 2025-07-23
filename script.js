@@ -111,7 +111,8 @@ function renderTimetable() {
 
             if (timetableData[day] && timetableData[day][period]) {
                 const lesson = timetableData[day][period];
-                cell.innerHTML = `<strong>${lesson.name || ''}</strong>`; // 授業名のみ表示
+                // 授業名と教室名を表示
+                cell.innerHTML = `<strong>${lesson.name || ''}</strong><br><span>${lesson.classroom || ''}</span>`;
                 if (lesson.hasAssignment) {
                     cell.classList.add('has-assignment'); // 課題がある場合は赤く表示
                 }
