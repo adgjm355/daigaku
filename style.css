@@ -6,20 +6,22 @@ body {
     color: #333;
 }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    background-color: #fff;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+header {
+    text-align: center;
+    margin-bottom: 20px;
 }
 
-/* タブスタイル */
+header h1 {
+    color: #007bff;
+    font-size: 2.5em;
+    margin: 0;
+}
+
 .tabs {
     display: flex;
     margin-bottom: 20px;
     border-bottom: 2px solid #ddd;
+    justify-content: center; /* 中央寄せ */
 }
 
 .tab-button {
@@ -30,13 +32,22 @@ body {
     border-radius: 5px 5px 0 0;
     margin-right: 5px;
     font-size: 16px;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .tab-button.active {
     background-color: #007bff;
     color: white;
     border-bottom: 2px solid #007bff;
+}
+
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
 }
 
 .tab-content {
@@ -75,7 +86,7 @@ h1, h2, h3, h4 {
 }
 
 .lesson-cell {
-    width: 15%; /* 曜日数に合わせて調整 */
+    width: calc(100% / 8); /* 8列（時限 + 7曜日）に合わせて調整 */
     height: 80px; /* 各授業ブロックの高さ */
     cursor: pointer;
     background-color: #e9f5ff;
@@ -107,7 +118,7 @@ h1, h2, h3, h4 {
 .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
+    z-index: 1000; /* Sit on top */
     left: 0;
     top: 0;
     width: 100%; /* Full width */
@@ -155,12 +166,15 @@ h1, h2, h3, h4 {
 
 .modal-content input[type="text"],
 .modal-content input[type="url"],
-.modal-content select {
+.modal-content input[type="number"],
+.modal-content select,
+.modal-content textarea { /* textareaも追加 */
     width: calc(100% - 22px); /* Padding and border */
     padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    box-sizing: border-box; /* パディングとボーダーをwidthに含める */
 }
 
 .modal-content button[type="submit"],
@@ -207,8 +221,8 @@ h1, h2, h3, h4 {
     background-color: #c82333;
 }
 
-/* 混雑具合スタイル */
-.crowd-section {
+/* 混雑具合タブ内のセクション */
+.current-info-section, .crowd-status-display-section {
     margin-bottom: 30px;
     padding: 15px;
     border: 1px solid #eee;
@@ -216,7 +230,25 @@ h1, h2, h3, h4 {
     background-color: #f9f9f9;
 }
 
-.eatery, .library, .smoking-area {
+.weather-input-display {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.weather-input-display label {
+    margin-right: 10px;
+    margin-top: 0;
+    margin-bottom: 0;
+    font-weight: bold;
+}
+
+.weather-input-display select {
+    width: auto;
+    padding: 8px;
+}
+
+.location-status {
     margin-bottom: 15px;
     padding: 10px;
     border: 1px solid #ddd;
@@ -241,8 +273,12 @@ h1, h2, h3, h4 {
 .status-display.empty {
     color: #28a745; /* 空は緑 */
 }
+.status-display.status-no-data {
+    color: #6c757d; /* データなしはグレー */
+}
 
-.crowd-section button {
+
+.location-status button { /* .crowd-section button から変更 */
     background-color: #28a745;
     color: white;
     padding: 8px 12px;
@@ -252,25 +288,53 @@ h1, h2, h3, h4 {
     margin-top: 10px;
 }
 
-.crowd-section button:hover {
+.location-status button:hover {
     background-color: #218838;
 }
 
 /* お店情報スタイル */
-#shops ul {
+#local-shops-tab ul { /* IDを修正 */
     list-style-type: disc;
     margin-left: 20px;
 }
 
-#shops li {
+#local-shops-tab li { /* IDを修正 */
     margin-bottom: 5px;
 }
 
-#shops a {
+#local-shops-tab a { /* IDを修正 */
     color: #007bff;
     text-decoration: none;
 }
 
-#shops a:hover {
+#local-shops-tab a:hover { /* IDを修正 */
     text-decoration: underline;
+}
+
+/* 共有ツールスタイル */
+.crowd-sharing-tools button,
+#timetable-tab button[id$="Data"] { /* 時間割共有ボタンも含む */
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+.crowd-sharing-tools button:hover,
+#timetable-tab button[id$="Data"]:hover {
+    background-color: #0056b3;
+}
+
+/* フッター */
+footer {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+    color: #666;
 }

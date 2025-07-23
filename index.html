@@ -12,18 +12,77 @@
     </header>
 
     <nav class="tabs">
-        <button class="tab-button active" onclick="openTab(event, 'timetable-tab')">時間割</button>
-        <button class="tab-button" onclick="openTab(event, 'crowd-status-tab')">混雑具合</button>
-        <button class="tab-button" onclick="openTab(event, 'local-shops-tab')">周辺のお店</button>
-        <button class="tab-button" onclick="openTab(event, 'settings-tab')">設定</button>
+        <button class="tab-button active" data-tab="timetable-tab">時間割</button>
+        <button class="tab-button" data-tab="crowd-status-tab">混雑具合</button>
+        <button class="tab-button" data-tab="local-shops-tab">周辺のお店</button>
+        <button class="tab-button" data-tab="settings-tab">設定</button>
     </nav>
 
     <main>
         <div id="timetable-tab" class="tab-content active">
             <h2>時間割</h2>
-            <div id="timetable-display">
+            <table id="timetable-table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>月</th>
+                        <th>火</th>
+                        <th>水</th>
+                        <th>木</th>
+                        <th>金</th>
+                        <th>土</th>
+                        <th>日</th> </tr>
+                </thead>
+                <tbody>
+                    </tbody>
+            </table>
+
+            <div id="lessonDetailModal" class="modal">
+                <div class="modal-content">
+                    <span class="close-button">×</span>
+                    <h2>授業詳細</h2>
+                    <form id="lessonDetailForm">
+                        <p><strong>曜日:</strong> <span id="modalDay"></span></p>
+                        <p><strong>時限:</strong> <span id="modalPeriod"></span></p>
+                        <label for="lessonName">授業名:</label>
+                        <input type="text" id="lessonName" required><br>
+                        <label for="classroom">教室名:</label>
+                        <input type="text" id="classroom"><br>
+                        <label for="teacherName">先生の名前:</label>
+                        <input type="text" id="teacherName"><br>
+                        <label for="attendanceStatus">出席状況:</label>
+                        <div id="attendanceInput" style="display:flex; align-items:center; margin-bottom: 10px;">
+                            <input type="number" id="attendanceCount" min="0" max="15" value="0" style="width: 60px; margin-right: 10px;"> 回出席
+                            <p style="margin:0;">(全15回中)</p>
+                        </div>
+                        <p>出席率: <span id="attendanceRateForm" style="font-weight: bold;">0%</span></p>
+                        <label>成績評価基準:</label>
+                        <div id="evaluationCriteria">
+                            <button type="button" id="addCriteria">項目を追加</button>
+                        </div><br>
+                        <label for="lessonSite">授業サイト (リンク):</label>
+                        <input type="url" id="lessonSite" placeholder="https://example.com"><br>
+                        <label for="syllabusLink">シラバスリンク:</label>
+                        <input type="url" id="syllabusLink" placeholder="https://example.com/syllabus"><br>
+                        <label for="hasAssignment">課題あり:</label>
+                        <input type="checkbox" id="hasAssignment"><br>
+                        <button type="submit">保存</button>
+                    </form>
+                    <div id="lessonDisplayArea" style="display:none;">
+                        <p><strong>授業名:</strong> <span id="displayLessonName"></span></p>
+                        <p><strong>教室名:</strong> <span id="displayClassroom"></span></p>
+                        <p><strong>先生の名前:</strong> <span id="displayTeacherName"></span></p>
+                        <p><strong>出席状況:</strong> <span id="displayAttendanceCount"></span> 回出席 (全15回中) <br>
+                           <strong>出席率:</strong> <span id="displayAttendanceRate"></span></p>
+                        <p><strong>成績評価基準:</strong> <ul id="displayEvaluationCriteria"></ul></p>
+                        <p><strong>授業サイト:</strong> <a id="displayLessonSite" target="_blank"></a></p>
+                        <p><strong>シラバスリンク:</strong> <a id="displaySyllabusLink" target="_blank"></a></p>
+                        <p><strong>課題:</strong> <span id="displayHasAssignment"></span></p>
+                        <button type="button" id="editLessonDetails">編集</button>
+                        <button type="button" id="deleteLessonDetails" style="background-color: #dc3545;">削除</button>
+                    </div>
                 </div>
-            <button onclick="openTimetableForm()">時間割を編集</button>
+            </div>
 
             <h3>時間割データ共有ツール</h3>
             <button id="exportTimetableData">時間割データをエクスポート</button>
@@ -33,47 +92,6 @@
             <textarea id="timetableDataInput" rows="5" placeholder="ここにインポートする時間割データを貼り付けてください" style="width:100%; margin-top: 10px;"></textarea>
             <button id="importTimetableData" style="background-color: #007bff;">時間割データをインポート</button>
             <p style="font-size: 0.9em; color: #666; margin-top: 5px;">※インポートすると、あなたのデータに共有されたデータが追加されます。</p>
-
-            <div id="timetableModal" class="modal">
-                <div class="modal-content">
-                    <span class="close-button">&times;</span>
-                    <h2>時間割編集</h2>
-                    <form id="timetableForm">
-                        <label for="day">曜日:</label>
-                        <select id="day" required>
-                            <option value="月">月</option>
-                            <option value="火">火</option>
-                            <option value="水">水</option>
-                            <option value="木">木</option>
-                            <option value="金">金</option>
-                            <option value="土">土</option>
-                            <option value="日">日</option>
-                        </select>
-
-                        <label for="period">時限:</label>
-                        <select id="period" required>
-                            <option value="1">1時限</option>
-                            <option value="2">2時限</option>
-                            <option value="3">3時限</option>
-                            <option value="4">4時限</option>
-                            <option value="5">5時限</option>
-                            <option value="6">6時限</option>
-                            <option value="7">7時限</option>
-                            <option value="8">8時限</option>
-                        </select>
-
-                        <label for="subjectName">科目名:</label>
-                        <input type="text" id="subjectName" placeholder="例: 物理学A" list="subjectSuggestions">
-                        <datalist id="subjectSuggestions"></datalist>
-
-                        <label for="classroom">教室:</label>
-                        <input type="text" id="classroom" placeholder="例: 1号館201教室">
-
-                        <button type="submit">時間割を保存</button>
-                    </form>
-                    <button onclick="clearAllTimetableData()" style="background-color: #dc3545; margin-top: 10px;">時間割をすべてクリア</button>
-                </div>
-            </div>
         </div>
 
         <div id="crowd-status-tab" class="tab-content">
@@ -88,10 +106,8 @@
                         <option value="晴れ">晴れ</option>
                         <option value="曇り">曇り</option>
                         <option value="雨">雨</option>
-                        <option value="雪">雪</option>
-                        <option value="その他">その他</option>
                     </select>
-                    <span id="displayWeather" style="margin-left: 10px; font-weight: bold;"></span>
+                    <span id="displayCurrentWeather" style="margin-left: 10px; font-weight: bold;"></span>
                 </div>
             </div>
 
@@ -99,34 +115,34 @@
                 <h3>混雑状況</h3>
                 <div class="location-status">
                     <h4>学食 (DA VINCH HALL)</h4>
-                    <p><span id="davinchHallStatus"></span></p>
-                    <p>おすすめメニュー: <span id="davinchHallMenu"></span></p>
+                    <p><span id="davinchHallStatus" class="status-display">現在の混雑状況: -</span></p>
+                    <p>おすすめメニュー: <span id="davinchHallMenu">未入力</span></p>
                     <button onclick="openCrowdForm('DA VINCH HALL')">混雑状況を編集</button>
                 </div>
                 <div class="location-status">
                     <h4>学食 (PASCAL HALL)</h4>
-                    <p><span id="pascalHallStatus"></span></p>
-                    <p>おすすめメニュー: <span id="pascalHallMenu"></span></p>
+                    <p><span id="pascalHallStatus" class="status-display">現在の混雑状況: -</span></p>
+                    <p>おすすめメニュー: <span id="pascalHallMenu">未入力</span></p>
                     <button onclick="openCrowdForm('PASCAL HALL')">混雑状況を編集</button>
                 </div>
                 <div class="location-status">
                     <h4>図書館 2階閲覧室</h4>
-                    <p><span id="library2FStatus"></span></p>
+                    <p><span id="library2FStatus" class="status-display">現在の混雑状況: -</span></p>
                     <button onclick="openCrowdForm('図書館 2階閲覧室')">混雑状況を編集</button>
                 </div>
                 <div class="location-status">
                     <h4>図書館 3階閲覧室</h4>
-                    <p><span id="library3FStatus"></span></p>
+                    <p><span id="library3FStatus" class="status-display">現在の混雑状況: -</span></p>
                     <button onclick="openCrowdForm('図書館 3階閲覧室')">混雑状況を編集</button>
                 </div>
                 <div class="location-status">
                     <h4>喫煙所 (構造物試験センター裏)</h4>
-                    <p><span id="structureTestCenterStatus"></span></p>
+                    <p><span id="structureTestCenterStatus" class="status-display">現在の混雑状況: -</span></p>
                     <button onclick="openCrowdForm('構造物試験センター裏')">混雑状況を編集</button>
                 </div>
                 <div class="location-status">
                     <h4>喫煙所 (10号館横)</h4>
-                    <p><span id="building10Status"></span></p>
+                    <p><span id="building10Status" class="status-display">現在の混雑状況: -</span></p>
                     <button onclick="openCrowdForm('10号館横')">混雑状況を編集</button>
                 </div>
             </div>
@@ -144,10 +160,10 @@
 
             <div id="crowdStatusModal" class="modal">
                 <div class="modal-content">
-                    <span class="close-button">&times;</span>
+                    <span class="close-button">×</span>
                     <h2>混雑状況を投稿</h2>
                     <form id="crowdStatusForm">
-                        <input type="hidden" id="locationName">
+                        <input type="hidden" id="locationNameInput">
                         <p>場所: <span id="modalLocationName" style="font-weight: bold;"></span></p>
 
                         <label for="dayOfWeek">曜日:</label>
@@ -170,8 +186,6 @@
                             <option value="晴れ">晴れ</option>
                             <option value="曇り">曇り</option>
                             <option value="雨">雨</option>
-                            <option value="雪">雪</option>
-                            <option value="その他">その他</option>
                         </select>
 
                         <label for="crowdLevel">混雑レベル:</label>
@@ -198,11 +212,11 @@
 
             <p>Google マップで周辺の便利なお店を共有しましょう。</p>
             <h3>閲覧用リンク</h3>
-            <p><a href="[ここに閲覧用GoogleマイマップのURLを貼り付ける]" target="_blank">学校周辺のお店のマップ (閲覧のみ)</a></p>
+            <p><a href="https://maps.app.goo.gl/L2GMcrTDbFQDRV1g9" target="_blank">学校周辺のお店のマップ (閲覧のみ)</a></p>
 
             <h3>編集用リンク</h3>
             <p>このリンクを使用して、新しいお店を追加したり、既存の情報を編集できます。</p>
-            <p><a href="[ここに編集用GoogleマイマップのURLを貼り付ける]" target="_blank">学校周辺のお店のマップ (編集用)</a></p>
+            <p><a href="https://maps.app.goo.gl/mSAyyQyM8xtaWE8VA" target="_blank">学校周辺のお店のマップ (編集用)</a></p>
 
             <p><strong>お店の共有方法:</strong></p>
             <ol>
@@ -215,11 +229,13 @@
         <div id="settings-tab" class="tab-content">
             <h2>設定</h2>
             <p>ここに設定項目を追加できます。</p>
+            <button onclick="clearAllData()">すべてのデータをクリア</button>
+            <p style="font-size: 0.9em; color: #dc3545; margin-top: 5px;">※このボタンを押すと、保存されている時間割、混雑具合、授業詳細のデータがすべて削除されます。</p>
         </div>
     </main>
 
     <footer>
-        <p>&copy; 2025 大学生生活援助アプリ</p>
+        <p>© 2025 大学生生活援助アプリ</p>
     </footer>
 
     <script src="script.js"></script>
